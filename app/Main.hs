@@ -1,8 +1,8 @@
 module Main where
 
+import Cipher
 import Cup
 import Lib
-import Person
 import Robot
 
 main :: IO ()
