@@ -1,5 +1,9 @@
 module Cup where
 
+--
+-- This simple example shows you can use "functions" to model objects with
+-- states!
+--
 -- Constructor: create a cup whose size is floz
 cup floz = \message -> message floz
 
