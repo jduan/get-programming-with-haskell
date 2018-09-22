@@ -2,8 +2,8 @@ module Main where
 
 import Cipher
 import Cup
-import Lib
 import Robot
+import XOR
 
 main :: IO ()
-main = someFunc
+main = putStrLn "hello world"
