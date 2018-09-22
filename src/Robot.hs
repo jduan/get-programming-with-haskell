@@ -1,6 +1,4 @@
-module Robot
-  ( robot
-  ) where
+module Robot where
 
 robot (name, attack, hp) = \message -> message (name, attack, hp)
 
@@ -25,3 +23,6 @@ setName aRobot newName = robot (newName, getAttack aRobot, getHP aRobot)
 setAttack aRobot newAttack = robot (getName aRobot, newAttack, getHP aRobot)
 
 setHP aRobot newHP = robot (getName aRobot, getAttack aRobot, newHP)
+
+printRobot aRobot =
+  aRobot (\(n, a, h) -> n ++ " attack:" ++ show a ++ " hp:" ++ show h)
