@@ -60,4 +60,59 @@ file4 =
 data TS a =
   TS [Int]
      [Maybe a]
-  deriving (Show, Eq)
+
+createTS :: [Int] -> [a] -> TS a
+createTS times values = TS completeTimes extendedValues
+  where
+    completeTimes = [minimum times .. maximum times]
+    timeValueMap = Map.fromList (zip times values)
+    extendedValues = map (\t -> Map.lookup t timeValueMap) completeTimes
+
+fileToTS :: [(Int, a)] -> TS a
+fileToTS pairs = createTS times values
+  where
+    (times, values) = unzip pairs
+
+showPair :: Show a => Int -> Maybe a -> String
+showPair time (Just value) = mconcat [show time, "|", show value, "\n"]
+showPair time Nothing = mconcat [show time, "|NA\n"]
+
+instance Show a => Show (TS a) where
+  show (TS times values) = mconcat $ zipWith showPair times values
+
+ts1 :: TS Double
+ts1 = fileToTS file1
+
+ts2 :: TS Double
+ts2 = fileToTS file2
+
+ts3 :: TS Double
+ts3 = fileToTS file3
+
+ts4 :: TS Double
+ts4 = fileToTS file4
+
+tsAll :: TS Double
+tsAll = mconcat [ts1, ts2, ts3, ts4]
+
+tsToMap :: TS a -> Map.Map Int a
+tsToMap (TS times values) = foldr f Map.empty (zip times values)
+  where
+    f (t, Nothing) m = m
+    f (t, Just v) m = Map.insert t v m
+
+-- When combining two time series, we favor the right one when there're
+-- duplicated keys!
+instance Semigroup (TS a) where
+  (TS [] []) <> ts2 = ts2
+  ts1 <> (TS [] []) = ts1
+  (TS t1 v1) <> (TS t2 v2) =
+    createTS (Map.keys combinedMap) (Map.elems combinedMap)
+    where
+      m1 = tsToMap (TS t1 v1)
+      m2 = tsToMap (TS t2 v2)
+      combinedMap = Map.union m2 m1
+
+instance Monoid (TS a) where
+  mempty = TS [] []
+  mappend = (<>)
