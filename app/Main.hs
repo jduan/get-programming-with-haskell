@@ -1,5 +1,6 @@
 module Main where
 
+import Cipher
 import Cup
 import Robot
 import Rot
