@@ -66,3 +66,8 @@ myPad = "Shhhhhh"
 
 encoderDecoder :: String -> String
 encoderDecoder = applyOTP myPad
+
+-- A Cipher class to generalize cipher operations
+class Cipher a where
+  encode :: a -> String -> String
+  decode :: a -> String -> String

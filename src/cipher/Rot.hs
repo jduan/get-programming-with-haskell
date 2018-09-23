@@ -1,4 +1,4 @@
-module Cipher where
+module Rot where
 
 data FourLetterAlphabet
   = L1
