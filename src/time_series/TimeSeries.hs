@@ -2,7 +2,7 @@ module TimeSeries where
 
 import Data.List
 import qualified Data.Map as Map
-import Data.Maybe
+import Data.Maybe (fromJust, isJust, isNothing)
 import Data.Semigroup
 
 file1 :: [(Int, Double)]
@@ -116,3 +116,47 @@ instance Semigroup (TS a) where
 instance Monoid (TS a) where
   mempty = TS [] []
   mappend = (<>)
+
+-- data TS a =
+--   TS [Int]
+--      [Maybe a]
+meanTS :: (Real a) => TS a -> Maybe Double
+meanTS (TS [] []) = Nothing
+meanTS (TS times values) =
+  if all isNothing values
+    then Nothing
+    else Just avg
+  where
+    justVals = filter isJust values
+    cleanVals = map fromJust justVals
+    avg = realToFrac (sum cleanVals) / realToFrac (length cleanVals)
+
+type CompareFunc a = a -> a -> a
+
+type TSCompareFunc a = (Int, Maybe a) -> (Int, Maybe a) -> (Int, Maybe a)
+
+makeTSCompare :: Eq a => CompareFunc a -> TSCompareFunc a
+makeTSCompare func = newFunc
+  where
+    newFunc (i1, Nothing) (_, Nothing) = (i1, Nothing)
+    newFunc (_, Nothing) (i, v) = (i, v)
+    newFunc (i, v) (_, Nothing) = (i, v)
+    newFunc (i1, Just v1) (i2, Just v2) =
+      if func v1 v2 == v1
+        then (i1, Just v1)
+        else (i2, Just v2)
+
+compareTS :: Eq a => CompareFunc a -> TS a -> Maybe (Int, Maybe a)
+compareTS func (TS [] []) = Nothing
+compareTS func (TS times values) =
+  if all isNothing values
+    then Nothing
+    else Just best
+  where
+    best = foldr (makeTSCompare func) (0, Nothing) (zip times values)
+
+minTS :: Ord a => TS a -> Maybe (Int, Maybe a)
+minTS = compareTS min
+
+maxTS :: Ord a => TS a -> Maybe (Int, Maybe a)
+maxTS = compareTS max
