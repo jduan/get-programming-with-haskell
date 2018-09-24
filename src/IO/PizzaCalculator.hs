@@ -1,5 +1,7 @@
 module PizzaCalculator where
 
+import qualified Data.Map as Map
+
 area :: Double -> Double
 area diameter = pi * (diameter / 2) ^ 2
 
@@ -32,3 +34,21 @@ mainPizza = do
   let pizza2 = (read size2, read cost2)
   let cheaperPizza = comparePizzas pizza1 pizza2
   putStrLn (describePizza cheaperPizza)
+
+costData :: Map.Map Int Double
+costData = Map.fromList [(1, 18.0), (2, 16.0)]
+
+sizeData :: Map.Map Int Double
+sizeData = Map.fromList [(1, 20.0), (2, 15.0)]
+
+-- This looks almost the same as the mainPizza function!
+maybeMain :: Maybe String
+maybeMain = do
+  size1 <- Map.lookup 1 sizeData
+  cost1 <- Map.lookup 1 costData
+  size2 <- Map.lookup 2 sizeData
+  cost2 <- Map.lookup 2 costData
+  let pizza1 = (size1, cost1)
+  let pizza2 = (size2, cost2)
+  let cheaperPizza = comparePizzas pizza1 pizza2
+  return (describePizza cheaperPizza)
