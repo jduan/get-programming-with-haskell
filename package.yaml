@@ -28,6 +28,7 @@ library:
   - src/robot/
   - src/cipher/
   - src/time_series/
+  - src/IO/
 
 executables:
   get-programming-with-haskell-exe:
