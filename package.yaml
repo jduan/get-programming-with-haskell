@@ -30,6 +30,7 @@ library:
   - src/cipher/
   - src/time_series/
   - src/IO/
+  - src/Monad/
 
 executables:
   get-programming-with-haskell-exe:
