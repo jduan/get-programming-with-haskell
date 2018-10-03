@@ -1,9 +1,7 @@
 module TimeSeries.TimeSeries where
 
-import Data.List
 import qualified Data.Map as Map
 import Data.Maybe (fromJust, isJust, isNothing)
-import Data.Semigroup
 
 file1 :: [(Int, Double)]
 file1 =
