@@ -1,4 +1,4 @@
-module Sum where
+module IO.Sum where
 
 import Control.Monad
 import System.Environment

@@ -1,4 +1,4 @@
-module SumLazy where
+module IO.SumLazy where
 
 toInts :: String -> [Int]
 toInts = map read . lines

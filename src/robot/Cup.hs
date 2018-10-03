@@ -1,4 +1,4 @@
-module Cup where
+module Robot.Cup where
 
 --
 -- This simple example shows you can use "functions" to model objects with

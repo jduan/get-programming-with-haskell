@@ -1,4 +1,4 @@
-module TimeSeries where
+module TimeSeries.TimeSeries where
 
 import Data.List
 import qualified Data.Map as Map

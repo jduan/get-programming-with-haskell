@@ -1,4 +1,4 @@
-module PRNG where
+module Cipher.PRNG where
 
 -- pseudo-random number generator
 prng :: Int -> Int -> Int -> Int -> Int

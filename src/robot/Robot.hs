@@ -1,4 +1,4 @@
-module Robot where
+module Robot.Robot where
 
 -- This is a constructor. It takes a tuple and returns a function
 -- that takes another function to act on the tuple.

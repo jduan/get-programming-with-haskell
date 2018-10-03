@@ -26,11 +26,7 @@ dependencies:
 
 library:
   source-dirs:
-  - src/robot/
-  - src/cipher/
-  - src/time_series/
-  - src/IO/
-  - src/Monad/
+  - src
 
 executables:
   get-programming-with-haskell-exe:

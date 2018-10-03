@@ -1,4 +1,4 @@
-module MonadExercises where
+module Monad.MonadExercises where
 
 {-
 

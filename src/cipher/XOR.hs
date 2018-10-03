@@ -1,4 +1,4 @@
-module XOR where
+module Cipher.XOR where
 
 xorBool :: Bool -> Bool -> Bool
 xorBool True True = False

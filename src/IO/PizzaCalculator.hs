@@ -1,4 +1,4 @@
-module PizzaCalculator where
+module IO.PizzaCalculator where
 
 import qualified Data.Map as Map
 

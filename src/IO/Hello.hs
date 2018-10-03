@@ -1,4 +1,4 @@
-module Hello where
+module IO.Hello where
 
 import qualified Data.Map as Map
 

@@ -1,4 +1,4 @@
-module Rot where
+module Cipher.Rot where
 
 data FourLetterAlphabet
   = L1

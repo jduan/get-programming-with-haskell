@@ -1,7 +1,7 @@
-module Cipher where
+module Cipher.Cipher where
 
-import Rot
-import XOR
+import Cipher.Rot
+import Cipher.XOR
 
 -- A Cipher class to generalize cipher operations
 class Cipher a where
