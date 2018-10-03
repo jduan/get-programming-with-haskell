@@ -31,7 +31,17 @@ library:
 executables:
   get-programming-with-haskell-exe:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:         app/Main
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - get-programming-with-haskell
+
+  distance:
+    main:                Main.hs
+    source-dirs:         app/Applicative
     ghc-options:
     - -threaded
     - -rtsopts
