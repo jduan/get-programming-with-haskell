@@ -94,4 +94,11 @@ allPairsWithoutDo xs ys = xs >>= \x -> ys >>= \y -> return (x, y)
 -- `Monad` instances for the `State` monad.
 -- Your solution goes here.
 -- You can use this to print things for debugging.
-main = print "Hello, World!"
+main2 = print "Hello, World!"
+
+-- Ask the user for a number, double it, and print the value
+doubleIt :: IO ()
+doubleIt = do
+  line <- getLine
+  let num = read line :: Int
+  print (2 * num)
