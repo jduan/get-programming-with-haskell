@@ -35,6 +35,18 @@ mainPizza = do
   let cheaperPizza = comparePizzas pizza1 pizza2
   putStrLn (describePizza cheaperPizza)
 
+-- do-notation desugared
+mainPizza' :: IO ()
+mainPizza' =
+  putStrLn "What is the size of pizza 1" >> getLine >>= \size1 ->
+    putStrLn "What is the cost of pizza 1" >> getLine >>= \cost1 ->
+      putStrLn "What is the size of pizza 2" >> getLine >>= \size2 ->
+        putStrLn "What is the cost of pizza 2" >> getLine >>= \cost2 ->
+          let pizza1 = (read size1, read cost1)
+              pizza2 = (read size2, read cost2)
+              cheaperPizza = comparePizzas pizza1 pizza2
+           in putStrLn (describePizza cheaperPizza)
+
 costData :: Map.Map Int Double
 costData = Map.fromList [(1, 18.0), (2, 16.0)]
 
@@ -48,6 +60,32 @@ maybeMain = do
   cost1 <- Map.lookup 1 costData
   size2 <- Map.lookup 2 sizeData
   cost2 <- Map.lookup 2 costData
+  let pizza1 = (size1, cost1)
+  let pizza2 = (size2, cost2)
+  let cheaperPizza = comparePizzas pizza1 pizza2
+  return (describePizza cheaperPizza)
+
+-- Rewrite the function above so it works with the List type.
+-- Don't worry if the results seem strange.
+maybeMain' :: [String]
+maybeMain' = do
+  size1 <- [10, 15]
+  cost1 <- [25, 40]
+  size2 <- [12, 20]
+  cost2 <- [20, 38]
+  let pizza1 = (size1, cost1)
+  let pizza2 = (size2, cost2)
+  let cheaperPizza = comparePizzas pizza1 pizza2
+  return (describePizza cheaperPizza)
+
+-- Refactor the maybeMain function so that it works with any Monad.
+maybeMainM ::
+     Monad m => m Double -> m Double -> m Double -> m Double -> m String
+maybeMainM s1 c1 s2 c2 = do
+  size1 <- s1
+  cost1 <- c1
+  size2 <- s2
+  cost2 <- c2
   let pizza1 = (size1, cost1)
   let pizza2 = (size2, cost2)
   let cheaperPizza = comparePizzas pizza1 pizza2

@@ -148,3 +148,14 @@ assessCandidateList candidates = do
           then "passed"
           else "failed"
   return statement
+
+-- A general function that works for any Monad!
+assessCandidate :: Monad m => m Candidate -> m String
+assessCandidate m = do
+  candidate <- m
+  let passed = viable candidate
+  let statement =
+        if passed
+          then "passed"
+          else "failed"
+  return statement
