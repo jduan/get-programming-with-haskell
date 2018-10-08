@@ -95,3 +95,30 @@ finalResult =
 
 teacherFirstName :: [String]
 teacherFirstName = _hinq (_select firstName) finalResult (_where (const True))
+
+--
+-- Define a data type so you don't have to provide a where clause.
+--
+data HINQ m a b
+  = HINQ (m a -> m b)
+         (m a)
+         (m a -> m a)
+  | HINQ_ (m a -> m b)
+          (m a)
+
+runHINQ :: (Monad m, Alternative m) => HINQ m a b -> m b
+runHINQ (HINQ sClause jClause wClause) = _hinq sClause jClause wClause
+runHINQ (HINQ_ sClause jClause) = _hinq sClause jClause (_where (const True))
+
+-- Because Haskell uses lazy evaluation, simply defining this query doesn't
+-- run it. This means you can pass around expensive computation without
+-- worrying about running the queries until you need the result.
+query1 :: HINQ [] (Teacher, Course) Name
+query1 =
+  HINQ
+    (_select (teacherName . fst))
+    (_join teachers courses teacherId teacher)
+    (_where ((== "English") . courseTitle . snd))
+
+query2 :: HINQ [] Teacher Name
+query2 = HINQ_ (_select teacherName) teachers
