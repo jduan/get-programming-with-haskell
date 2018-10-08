@@ -145,3 +145,51 @@ maybeQuery2 =
     (_select (teacherName . fst))
     (_join possibleTeacher missingCourse teacherId teacher)
     (_where ((== "French") . courseTitle . snd))
+
+--
+-- course enrollment
+--
+data Enrollment = Enrollment
+  { student :: Int
+  , course :: Int
+  } deriving (Show, Eq)
+
+enrollments :: [Enrollment]
+enrollments =
+  [ Enrollment 1 101
+  , Enrollment 2 101
+  , Enrollment 2 201
+  , Enrollment 3 101
+  , Enrollment 4 201
+  , Enrollment 4 101
+  , Enrollment 5 101
+  , Enrollment 6 201
+  ]
+
+studentEnrollmentsQuery =
+  HINQ_
+    (_select
+       (\(student, enrollment) -> (studentName student, course enrollment)))
+    (_join students enrollments studentId student)
+
+studentEnrollments :: [(Name, Int)]
+studentEnrollments = runHINQ studentEnrollmentsQuery
+
+studentCoursesQuery =
+  HINQ_
+    (_select
+       (\((studentName, courseId), kourse) -> (studentName, courseTitle kourse)))
+    (_join studentEnrollments courses snd courseId)
+
+studentCourses :: [(Name, String)]
+studentCourses = runHINQ studentCoursesQuery
+
+-- Given a course name, find all the students that enrolled in that course.
+getEnrollments :: String -> [Name]
+getEnrollments courseName = runHINQ courseQuery
+  where
+    courseQuery =
+      HINQ
+        (_select (fst . fst))
+        (_join studentEnrollments courses snd courseId)
+        (_where ((== courseName) . courseTitle . snd))
